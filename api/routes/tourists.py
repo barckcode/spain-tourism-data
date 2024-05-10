@@ -12,7 +12,7 @@ tourists_route = APIRouter()
 
 
 @tourists_route.get(
-    "/tourists/{autonomous_community}",
+    "/tourists",
     tags=["Tourists"],
     summary="Get Tourists by Autonomous Community",
     description="Get all Tourists by Autonomous Community in Spain"
