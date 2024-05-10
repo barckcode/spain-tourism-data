@@ -1,4 +1,4 @@
-from fastapi import APIRouter, HTTPException, status, Depends
+from fastapi import APIRouter, status, Depends
 from fastapi.responses import Response
 from sqlalchemy.orm import Session
 from db.session import get_db
@@ -19,7 +19,8 @@ database_route = APIRouter()
     dependencies=[Depends(get_api_key)]
 )
 def create_tourists_db(db: Session = Depends(get_db)):
-    df = load_data_from_s3()
+    object_key = 'spain-turism-data/api/dev/tourists/10_2015_to_03_2024.csv'
+    df = load_data_from_s3(object_key)
     for _, row in df.iterrows():
         if isinstance(row['Total'], float):
             total = row['Total']
