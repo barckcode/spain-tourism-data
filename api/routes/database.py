@@ -4,6 +4,7 @@ from sqlalchemy.orm import Session
 from db.session import get_db
 from utils.statics import load_data_from_s3
 from utils.clean_data import clean_autonomous_community_name
+from auth.api_key import get_api_key
 from models.tourists import Tourists
 
 
@@ -14,11 +15,12 @@ database_route = APIRouter()
     "/database/tourists",
     tags=["Data"],
     summary="Tourists Database",
-    description="Create Tourists Database"
+    description="Create Tourists Database",
+    dependencies=[Depends(get_api_key)]
 )
 def create_tourists_db(db: Session = Depends(get_db)):
     df = load_data_from_s3()
-    for index, row in df.iterrows():
+    for _, row in df.iterrows():
         if isinstance(row['Total'], float):
             total = row['Total']
         else:
