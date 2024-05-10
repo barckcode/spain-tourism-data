@@ -23,11 +23,11 @@ def tourists_by_autonomous_community(autonomous_community: str, db: Session = De
         raise HTTPException(status_code=status.HTTP_204_NO_CONTENT, detail="No data has been found for the indicated autonomous community")
     data = []
     for item in result:
+        date = datetime(item.year, item.month, 1)
+        iso_date = date.isoformat().split('T')[0]
         data.append({
             "autonomous_community": item.autonomous_community,
-            "year": item.year,
-            "month": item.month - 1,
-            "day": 1,
+            "time": iso_date,
             "value": item.total
         })
     db.close()
