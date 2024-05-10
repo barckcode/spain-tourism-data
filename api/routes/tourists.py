@@ -18,7 +18,7 @@ tourists_route = APIRouter()
     description="Get all Tourists by Autonomous Community in Spain"
 )
 def tourists_by_autonomous_community(autonomous_community: str, db: Session = Depends(get_db)):
-    result = db.query(Tourists).filter(Tourists.autonomous_community.like(f'%{autonomous_community}%'), Tourists.data_type.like('%Dato base%')).order_by(asc(Tourists.year), asc(Tourists.month)).all()
+    result = db.query(Tourists).filter(Tourists.autonomous_community.ilike(f'%{autonomous_community}%'), Tourists.data_type.like('%Dato base%')).order_by(asc(Tourists.year), asc(Tourists.month)).all()
     if len(result) == 0:
         raise HTTPException(status_code=status.HTTP_204_NO_CONTENT, detail="No data has been found for the indicated autonomous community")
     data = []
