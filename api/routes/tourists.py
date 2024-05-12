@@ -17,18 +17,21 @@ tourists_route = APIRouter()
     summary="Get Tourists by Autonomous Community",
     description="Get all Tourists by Autonomous Community in Spain"
 )
-def tourists_by_autonomous_community(autonomous_community: str, db: Session = Depends(get_db)):
-    result = db.query(Tourists).filter(Tourists.autonomous_community.ilike(f'%{autonomous_community}%'), Tourists.data_type.like('%Dato base%')).order_by(asc(Tourists.year), asc(Tourists.month)).all()
+def tourists_by_autonomous_community(autonomous_community: str, data_type: str = "Dato base", db: Session = Depends(get_db)):
+    result = db.query(Tourists).filter(Tourists.autonomous_community.ilike(f'%{autonomous_community}%'), Tourists.data_type.like(f'%{data_type}%')).order_by(asc(Tourists.year), asc(Tourists.month)).all()
     if len(result) == 0:
         raise HTTPException(status_code=status.HTTP_204_NO_CONTENT, detail="No data has been found for the indicated autonomous community")
     data = []
     for item in result:
         date = datetime(item.year, item.month, 1)
         iso_date = date.isoformat().split('T')[0]
+        value = item.total
+        if "Tasa de variación" in data_type:
+            value = round(item.total / 100, 2)
         data.append({
             "autonomous_community": item.autonomous_community,
             "time": iso_date,
-            "value": item.total
+            "value": value
         })
     db.close()
     json_compatible_item_data = jsonable_encoder(data)
