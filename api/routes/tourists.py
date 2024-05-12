@@ -26,7 +26,7 @@ def tourists_by_autonomous_community(autonomous_community: str, data_type: str =
         date = datetime(item.year, item.month, 1)
         iso_date = date.isoformat().split('T')[0]
         value = item.total
-        if "Tasa de variación" in data_type:
+        if "variación" in data_type:
             value = round(item.total / 100, 2)
         data.append({
             "autonomous_community": item.autonomous_community,
