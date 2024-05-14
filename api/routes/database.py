@@ -43,7 +43,7 @@ def create_tourists_db(db: Session = Depends(get_db)):
 
 
 @database_route.get(
-    "/database/access_road",
+    "/database/access-road",
     tags=["Data"],
     summary="Access Road Database",
     description="Create Access Road Database",
