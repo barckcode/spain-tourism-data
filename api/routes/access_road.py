@@ -14,10 +14,10 @@ access_road_route = APIRouter()
 @access_road_route.get(
     "/access-road",
     tags=["Access Road"],
-    summary="Get Tourists by Autonomous Community",
-    description="Get all Tourists by Autonomous Community in Spain"
+    summary="Get Access Road Data",
+    description="Get all Access Road Data in Spain"
 )
-def tourists_access_route(access_road_type: str, data_type: str = "Dato base", db: Session = Depends(get_db)):
+def get_access_road_data(access_road_type: str, data_type: str = "Dato base", db: Session = Depends(get_db)):
     result = db.query(AccessRoad).filter(AccessRoad.access_road_type == access_road_type, AccessRoad.data_type.like(f'%{data_type}%')).order_by(asc(AccessRoad.year), asc(AccessRoad.month)).all()
     if len(result) == 0:
         raise HTTPException(status_code=status.HTTP_204_NO_CONTENT, detail="No data has been found for the indicated access road type")

@@ -4,6 +4,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from routes.database import database_route
 from routes.tourists import tourists_route
 from routes.access_road import access_road_route
+from routes.accommodation_type import accommodation_type_route
 
 
 spain_turism_frontend = os.getenv('SPAIN_TURISM_FRONTEND')
@@ -22,6 +23,14 @@ app = FastAPI(
             "name": "Tourists",
             "description": "Tourists in Spain"
         },
+        {
+            "name": "Access Road",
+            "description": "Types of tourist access to Spain"
+        },
+        {
+            "name": "Accommodation Type",
+            "description": "Types of accommodation chosen by tourists."
+        }
     ]
 )
 
@@ -40,3 +49,4 @@ app.add_middleware(
 app.include_router(database_route)
 app.include_router(tourists_route)
 app.include_router(access_road_route)
+app.include_router(accommodation_type_route)
