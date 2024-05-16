@@ -17,8 +17,8 @@ accommodation_type_route = APIRouter()
     summary="Get Accommodation Type Data",
     description="Get all Accommodation Type Data in Spain"
 )
-def get_accommodation_type_data(accommodation_type_name: str, paid_accommodation: str, data_type: str = "Dato base", db: Session = Depends(get_db)):
-    result = db.query(AccommodationType).filter(AccommodationType.accommodation_type_name == accommodation_type_name, AccommodationType.paid_accommodation == paid_accommodation, AccommodationType.data_type.like(f'%{data_type}%')).order_by(asc(AccommodationType.year), asc(AccommodationType.month)).all()
+def get_accommodation_type_data(accommodation_type_name: str, data_type: str = "Dato base", db: Session = Depends(get_db)):
+    result = db.query(AccommodationType).filter(AccommodationType.accommodation_type_name == accommodation_type_name, AccommodationType.data_type.like(f'%{data_type}%')).order_by(asc(AccommodationType.year), asc(AccommodationType.month)).all()
     if len(result) == 0:
         raise HTTPException(status_code=status.HTTP_204_NO_CONTENT, detail="No data has been found for the indicated accommodation type")
     data = []
@@ -30,7 +30,6 @@ def get_accommodation_type_data(accommodation_type_name: str, paid_accommodation
             value = round(item.total / 100, 2)
         data.append({
             "accommodation_type_name": item.accommodation_type_name,
-            "paid_accommodation": item.paid_accommodation,
             "time": iso_date,
             "value": value
         })
