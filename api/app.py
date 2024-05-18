@@ -30,6 +30,10 @@ app = FastAPI(
         {
             "name": "Accommodation Type",
             "description": "Types of accommodation chosen by tourists."
+        },
+        {
+            "name": "Travel Time",
+            "description": "Travel time to the tourist destination."
         }
     ]
 )
